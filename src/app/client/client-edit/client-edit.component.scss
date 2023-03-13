@@ -1,0 +1,25 @@
+.container {
+    min-width: 350px;
+    max-width: 500px;
+    width: 90%;
+    margin: 20px;
+
+    h1{
+        color: whitesmoke;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        margin-bottom:20px;
+    }
+
+    .buttons {
+      text-align: right;
+
+      button {
+          margin-left:10px;
+          color: whitesmoke;
+      }
+    }
+}

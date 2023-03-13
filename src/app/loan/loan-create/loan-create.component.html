@@ -1,0 +1,53 @@
+<div class="container">
+    <h1>Crear préstamo</h1>
+
+    <form>
+        <mat-form-field>
+            <mat-label>Identificador</mat-label>
+            <input type="number" matInput placeholder="Identificador" [(ngModel)]="loan.id" name="id" disabled>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Juego</mat-label>
+            <mat-select disableRipple [(ngModel)]="loan.game" name="game" required>
+                <mat-option *ngFor="let game of games" [value]="game">{{game.title}}</mat-option>
+            </mat-select>
+            <mat-error>El juego no puede estar vacío</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Cliente</mat-label>
+            <mat-select disableRipple [(ngModel)]="loan.client" name="client" required>
+                <mat-option *ngFor="let client of clients" [value]="client">{{client.name}}</mat-option>
+            </mat-select>
+            <mat-error>El cliente no puede estar vacío</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Fecha de inicio</mat-label>
+            <input matInput [matDatepicker]="pickerBegin" placeholder="Fecha inicio del préstamo" 
+                [(ngModel)] ="loan.begin" name="begin" required (ngModelChange) ="checkDates()" required>
+            <mat-datepicker-toggle matIconSuffix [for]="pickerBegin"></mat-datepicker-toggle>
+            <mat-datepicker #pickerBegin></mat-datepicker>
+            <mat-error>La fecha de inicio no puede estar vacía</mat-error>
+        </mat-form-field>
+    
+        <mat-form-field>
+            <mat-label>Fecha de devolución</mat-label>
+            <input matInput [matDatepicker]="pickerEnd" placeholder="Fecha fin del préstamo"
+            [(ngModel)] ="loan.end" name="end" required (ngModelChange) ="checkDates()" required>
+            <mat-datepicker-toggle matIconSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+            <mat-datepicker #pickerEnd></mat-datepicker>
+            <mat-error>La fecha de devolución no puede estar vacía</mat-error>
+        </mat-form-field>
+        <mat-error *ngIf="endBeforeBegin" >La fecha de inicio debe ser anterior o igual a la fecha final</mat-error>
+        <mat-error *ngIf="loanTooLong" >El préstamo máximo es de 14 días</mat-error>
+    </form>
+    
+    <div class="buttons">
+        <button mat-stroked-button (click)="onClose()">Cerrar</button>
+        <button mat-flat-button color="primary" (click)="onSave()">Guardar</button>
+    </div>
+    
+
+</div>
