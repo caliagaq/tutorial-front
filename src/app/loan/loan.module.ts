@@ -40,6 +40,7 @@ import { MatNativeDateModule, MatOptionModule, MAT_DATE_LOCALE } from '@angular/
   ],
   providers : [
       {provide: MAT_DIALOG_DATA, useValue: {}},
+      {provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
   ]
 })
 export class LoanModule { }
