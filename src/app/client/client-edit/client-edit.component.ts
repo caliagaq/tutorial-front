@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DialogErrorComponent } from 'src/app/core/dialog-error/dialog-error.component';
 import { ClientService } from '../client.service';
 import { Client } from '../model/Client';
 
@@ -15,7 +16,8 @@ export class ClientEditComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ClientEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private clientService: ClientService
+    private clientService: ClientService,
+    private dialog: MatDialog
   ) {}
   
   ngOnInit(): void {
@@ -31,8 +33,9 @@ export class ClientEditComponent implements OnInit {
     this.clientService.saveClient(this.client).subscribe({
       next: () => { this.dialogRef.close() },
       error: (error: HttpErrorResponse) => {
-        alert(error.error.message);
-        this.dialogRef.close();
+          this.dialog.open(DialogErrorComponent, {
+          data: { message: error.error.message }
+        });
       }
     });
   }

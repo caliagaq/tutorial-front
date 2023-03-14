@@ -1,8 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ClientService } from 'src/app/client/client.service';
 import { Client } from 'src/app/client/model/Client';
+import { DialogErrorComponent } from 'src/app/core/dialog-error/dialog-error.component';
 import { GameEditComponent } from 'src/app/game/game-edit/game-edit.component';
 import { GameService } from 'src/app/game/game.service';
 import { Game } from 'src/app/game/model/Game';
@@ -27,6 +28,7 @@ export class LoanCreateComponent implements OnInit {
     private gameService: GameService,
     private clientService: ClientService,
     private loanService: LoanService,
+    public dialog: MatDialog,
   ) { }  
 
   ngOnInit(): void {
@@ -54,6 +56,7 @@ export class LoanCreateComponent implements OnInit {
     
     this.endBeforeBegin = false;
     this.loanTooLong = false;
+
     //Fecha end menor que begin o préstamo de más de 14 días
     if(differenceInDays < 0 ){
       this.endBeforeBegin = true;
@@ -68,8 +71,9 @@ export class LoanCreateComponent implements OnInit {
       this.loanService.saveLoan(this.loan).subscribe({
         next: () => { this.dialogRef.close() },
         error: (error: HttpErrorResponse) => {
-          alert(error.error.message);
-          this.dialogRef.close();
+          const dialogRef = this.dialog.open(DialogErrorComponent, {
+            data: { message: error.error.message }
+          });
         }
       });
     }
